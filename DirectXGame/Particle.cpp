@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include "MyMath.h"
 #include <algorithm>
 #include <cassert>
 
@@ -55,7 +56,7 @@ void Particle::Update() {
 	color_.w = std::clamp(1.0f - counter_ / kDuration, 0.0f, 1.0f);
 
 	// 行列の更新
-	worldTransform_.UpdateMatrix();
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 }
 
 void Particle::Draw(KamataEngine::Camera& camera) { model_->Draw(worldTransform_, camera, &objectColor_); }

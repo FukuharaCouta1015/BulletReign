@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "MyMath.h"
 
 using namespace KamataEngine;
 using namespace MathUtility;
@@ -131,11 +132,19 @@ void Player::Update() {
 	// プレイヤーの行列更新
 	// =========================
 
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+
 	worldTransform_.UpdateMatrix();
 }
 
 // 描画
 void Player::Draw(Camera& camera) {
+
+
+	  // プレイヤーが非表示なら、プレイヤーと弾を描画しない
+	if (!isVisible_) {
+		return;
+	}
 
 	// プレイヤー描画
 	model_->Draw(worldTransform_, camera);

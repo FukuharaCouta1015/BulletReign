@@ -1,5 +1,5 @@
 #include "Effect.h"
-
+#include "MyMath.h"
 #include <algorithm>
 
 using namespace KamataEngine;
@@ -49,8 +49,8 @@ void Effect::Update() {
 	worldTransform_.scale_.x *= 1.05f;
 	worldTransform_.scale_.y *= 1.07f;
 
-	worldTransform_.UpdateMatrix();
-}
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+} 
 
 void Effect::Draw(KamataEngine::Camera& camera) {
 	// assert(model_ != nullptr);

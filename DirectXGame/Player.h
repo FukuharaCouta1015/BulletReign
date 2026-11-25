@@ -22,6 +22,13 @@ public:
 	// 弾と敵の当たり判定
 	bool CheckBulletCollision(const KamataEngine::Vector3& enemyPosition);
 
+	// プレイヤーの座標を取得
+	const KamataEngine::Vector3& GetPosition() const { return worldTransform_.translation_; }
+
+	// プレイヤーを消す
+	void SetVisible(bool visible) { isVisible_ = visible; }
+
+
 private:
 	// モデル
 	KamataEngine::Model* model_ = nullptr;
@@ -43,4 +50,7 @@ private:
 
 	// 連射間隔
 	static const int kShotInterval = 10;
+
+	// プレイヤーの表示フラグ
+	bool isVisible_ = true;
 };

@@ -1,5 +1,7 @@
 #include "Enemy.h"
+#include "MyMath.h"
 #include <numbers>
+
 using namespace KamataEngine;
 
 // 初期化
@@ -18,6 +20,8 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	
 	worldTransform_.scale_ = {2.0f, 2.0f, 2.0f};
 
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+
 	worldTransform_.UpdateMatrix();
 }
 
@@ -32,7 +36,10 @@ void Enemy::Update() {
 		isDead_ = true;
 	}
 
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+
 	worldTransform_.UpdateMatrix();
+	
 }
 
 // 描画

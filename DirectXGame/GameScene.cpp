@@ -2,6 +2,7 @@
 #include <random>
 #include <ctime>
 #include <cstdlib>
+#include <cmath>
 
 using namespace KamataEngine;
 using namespace MathUtility;
@@ -163,16 +164,35 @@ void Game::Update() {
 		// =========================
 
 		enemySpawnTimer_++;
-
 		for (Enemy* enemy : enemies_) {
 			enemy->Update();
-			// 弾と敵の当たり判定
-			if (player_->CheckBulletCollision(enemy->GetPosition())) {
 
-				// 敵を倒す
+			  // 弾と敵の当たり判定
+			if (player_->CheckBulletCollision(enemy->GetPosition())) {
 				enemy->SetDead();
 			}
+
+			// プレイヤーと敵の当たり判定
+			if (phase_ == Phase::kPlay) {
+				Vector3 playerPosition = player_->GetPosition();
+				Vector3 enemyPosition = enemy->GetPosition();
+
+				float dx = playerPosition.x - enemyPosition.x;
+				float dy = playerPosition.y - enemyPosition.y;
+				float distance = std::sqrt(dx * dx + dy * dy);
+
+				if (distance < 2.5f) {
+
+					// プレイヤーを消す
+					player_->SetVisible(false);
+
+					phase_ = Phase::kDeath;
+					break;
+				}
+			}
 		}
+
+		
 
 		// =========================
 		// 死んだ敵を削除
@@ -308,7 +328,7 @@ void Game::Update() {
 	case Phase::kDeath: {
 		// フェードアウト開始
 		phase_ = Phase::kFadeOut;
-		fade_->Start(Fade::Status::FadeOut, 1.0f);
+		fade_->Start(Fade::Status::FadeOut, 0.2f);
 
 		break;
 	}
